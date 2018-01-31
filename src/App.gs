@@ -1,1 +1,3 @@
-var _ = Underscore.load();
+function helloWorld() {
+  return 'Hello world!';
+}

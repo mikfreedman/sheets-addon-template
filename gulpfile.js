@@ -7,6 +7,7 @@ var del = require('del');
 var rename = require("gulp-rename");
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var Server = require('karma').Server;
 
 gulp.task('dist', ['clean'], function() {
   gulp.src('src/*.gs')
@@ -26,8 +27,23 @@ gulp.task('clean', function() {
   ]);
 });
 
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+gulp.task('tdd', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
+});
+
 gulp.task('lint', function() {
-  return gulp.src(['src/*.gs', 'test/**/*.js'])
+  return gulp.src(['src/*.gs', 'spec/**/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter(stylish));
 });
+
+gulp.task('default', ['tdd']);
